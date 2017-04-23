@@ -1,5 +1,5 @@
-
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 '''
 Tables creation.
@@ -55,45 +55,40 @@ CREATE TABLE Elections_Candidates
     FOREIGN KEY(candidates_id) REFERENCES Candidates(id)
 );
 '''
-class Electors(models.Model):
-	name = models.CharField(max_length=30)
-	surname = models.CharField(max_length=30)
-	birth_date = models.DateField()
-	username = models.CharField(max_length=30)
-	password = models.CharField(max_length=30)
-
-	def __str__(self):
-		return name + surname
 
 
-class Candidates(models.Model):
-	name = models.CharField(max_length=30)
-	surname = models.CharField(max_length=30)
-	birth_date = models.DateField()
-
-	def __str__(self):
-		return self.name + self.surname	
+class User(AbstractUser):
+    birth_date = models.DateField(null=True)
 
 
-class Elections(models.Model):
-	description = models.CharField(max_length=50)
-	vote_limit = models.IntegerField(default=1)
-	start_date = models.DateField()
-	end_date = models.DateField()
-	candidates = models.ManyToManyField(Candidates, through='ElectionsCandidates')
-	voters = models.ManyToManyField(Electors, through='ElectionsPriviliged')
+class Candidate(models.Model):
+    name = models.CharField(max_length=30)
+    surname = models.CharField(max_length=30)
+    birth_date = models.DateField()
 
-	def __str__(self):
-		return self.description
+    def __str__(self):
+        return self.name + self.surname
 
 
-class ElectionsCandidates(models.Model):
-	election = models.ForeignKey(Elections, on_delete=models.CASCADE)
-	candidate = models.ForeignKey(Candidates, on_delete=models.CASCADE)
-	votes = models.IntegerField(default=0)
+class Election(models.Model):
+    description = models.CharField(max_length=50)
+    vote_limit = models.IntegerField(default=1)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    candidates = models.ManyToManyField(Candidate, through='ElectionsCandidate')
+    voters = models.ManyToManyField(User, through='ElectionsPriviliged')
+
+    def __str__(self):
+        return self.description
+
+
+class ElectionsCandidate(models.Model):
+    election = models.ForeignKey(Election, on_delete=models.CASCADE)
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    votes = models.IntegerField(default=0)
 
 
 class ElectionsPriviliged(models.Model):
-	election = models.ForeignKey(Elections, on_delete=models.CASCADE)
-	elector = models.ForeignKey(Electors, on_delete=models.CASCADE)
-	vote = models.BooleanField(default=False)
+    election = models.ForeignKey(Election, on_delete=models.CASCADE)
+    elector = models.ForeignKey(User, on_delete=models.CASCADE)
+    vote = models.BooleanField(default=False)
