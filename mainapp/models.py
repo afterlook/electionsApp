@@ -92,3 +92,4 @@ class ElectionsPrivileged(models.Model):
     election = models.ForeignKey(Election, on_delete=models.CASCADE)
     elector = models.ForeignKey(User, on_delete=models.CASCADE)
     vote = models.BooleanField(default=False)
+

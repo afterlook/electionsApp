@@ -1,6 +1,6 @@
 from django.contrib.auth.models import Group
 from .models import User, Candidate, Election, ElectionsCandidate, ElectionsPrivileged
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from .serializers import UserSerializer, GroupSerializer, CandidateSerializer, ElectionSerializer, \
     ElectionsCandidateSerializer, ElectionsPrivilegedSerializer
 
@@ -50,6 +50,19 @@ class ElectionsPrivilegedViewSet(viewsets.ModelViewSet):
     """
     queryset = ElectionsPrivileged.objects.all()
     serializer_class = ElectionsPrivilegedSerializer
+
+
+class ElectionsCandidatesList(generics.ListAPIView):
+    """
+    API endpoint list of candidates for specific elections.
+    """
+    queryset = Candidate.objects.all()
+    serializer_class = ElectionsCandidateSerializer
+
+    def get_queryset(self):
+        id = self.kwargs['pk']
+        return ElectionsCandidate.objects.filter(election_id=id)
+
 
 
 

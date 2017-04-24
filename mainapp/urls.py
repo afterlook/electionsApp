@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
-from mainapp import views
+from .views import ElectionsCandidatesList
 
 urlpatterns = [
-    # url(r'^$', views.index, name='index'),
+    url(r'^election-candidates/(?P<pk>\d+)/$', ElectionsCandidatesList.as_view(), name='election-candidates'),
 ]
