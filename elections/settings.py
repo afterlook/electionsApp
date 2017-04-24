@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'debug_toolbar',
+    'webpack_loader',
 ]
 
 REST_FRAMEWORK = {
@@ -115,6 +116,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+STATICFILES_DIRS = (
+    #This lets Django's collectstatic store our bundles
+    os.path.join(BASE_DIR, 'assets'),
+)
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

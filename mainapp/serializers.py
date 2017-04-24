@@ -39,4 +39,4 @@ class ElectionsCandidateSerializer(serializers.HyperlinkedModelSerializer):
 class ElectionsPrivilegedSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ElectionsPrivileged
-        field = ('url', 'id', 'election', 'elector', 'vote')
+        fields = ('url', 'id', 'election', 'elector', 'vote')
