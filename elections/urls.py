@@ -22,6 +22,11 @@ from mainapp import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'candidates', views.CandidateViewSet)
+router.register(r'elections', views.ElectionViewSet)
+router.register(r'elections_candidates', views.ElectionsCandidateViewSet)
+router.register(r'elections_privileged', views.ElectionsPrivilegedViewSet)
+
 
 urlpatterns = [
     url(r'^', include(router.urls)),

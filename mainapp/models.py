@@ -33,7 +33,7 @@ CREATE TABLE Elector
     PRIMARY KEY(id)
 );
 
-CREATE TABLE Elections_Priviliged
+CREATE TABLE Elections_Privileged
 (
     id INT NOT NULL AUTO_INCREMENT,
     elections_id MEDIUMINT NOT NULL,
@@ -76,7 +76,7 @@ class Election(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     candidates = models.ManyToManyField(Candidate, through='ElectionsCandidate')
-    voters = models.ManyToManyField(User, through='ElectionsPriviliged')
+    voters = models.ManyToManyField(User, through='ElectionsPrivileged')
 
     def __str__(self):
         return self.description
@@ -88,7 +88,7 @@ class ElectionsCandidate(models.Model):
     votes = models.IntegerField(default=0)
 
 
-class ElectionsPriviliged(models.Model):
+class ElectionsPrivileged(models.Model):
     election = models.ForeignKey(Election, on_delete=models.CASCADE)
     elector = models.ForeignKey(User, on_delete=models.CASCADE)
     vote = models.BooleanField(default=False)

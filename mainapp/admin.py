@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserCreationForm, ReadOnlyPasswordHashField
 
-from .models import User, Candidate, ElectionsCandidate, ElectionsPriviliged
+from .models import User, Candidate, ElectionsCandidate, ElectionsPrivileged
 
 
 class UserCreationForm(forms.ModelForm):
@@ -85,4 +85,4 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(Candidate)
 admin.site.register(ElectionsCandidate)
-admin.site.register(ElectionsPriviliged)
+admin.site.register(ElectionsPrivileged)
