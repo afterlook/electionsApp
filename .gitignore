@@ -89,7 +89,7 @@ ENV/
 .ropeproject
 
 # Idea
-.idea
+.idea/
 
 # React dependencies
-node_modules
+node_modules/
