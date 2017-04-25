@@ -45,9 +45,9 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAdminUser',
-    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAdminUser',
+    # ],
     'PAGE_SIZE': 10
 }
 
@@ -117,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 STATICFILES_DIRS = (
-    #This lets Django's collectstatic store our bundles
+    #This lets Django's collect static store our bundles
     os.path.join(BASE_DIR, 'assets'),
 )
 

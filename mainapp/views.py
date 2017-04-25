@@ -64,6 +64,11 @@ class ElectionsCandidatesList(generics.ListAPIView):
         return ElectionsCandidate.objects.filter(election_id=id)
 
 
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
 
 
 

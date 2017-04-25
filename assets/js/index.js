@@ -1,14 +1,12 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 
-var Hello = React.createClass ({
-    render: function() {
-        return (
-            <h1>
-            Hello, React!
-            </h1>
-        )
-    }
-})
-
-ReactDOM.render(<Hello />, document.getElementById('container'))
+fetch('/mainapp/user-list').then(function(response) {
+    return response.json()
+}).then(function(j) {
+    j.results.forEach(function(element) {
+        console.log(element.username);
+    });
+}).catch(function(err) {
+	console.log('error: did not read user json')
+});
