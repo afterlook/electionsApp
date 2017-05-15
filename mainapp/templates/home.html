@@ -1,0 +1,25 @@
+{#{% extends 'base.html' %}#}
+{#{% load render_bundle from webpack_loader %}#}
+{##}
+{#{% block content %}#}
+{#    <div id="root"></div>#}
+{#    {% render_bundle 'main' %}#}
+{#{% endblock %}#}
+{% load render_bundle from webpack_loader %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Elections App</title>
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
+    </head>
+    <body>
+        <div id="container"></div>
+        {% render_bundle 'main' %}
+    </body>
+</html>
+

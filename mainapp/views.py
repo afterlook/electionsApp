@@ -1,4 +1,8 @@
 from django.contrib.auth.models import Group
+from knox.auth import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
 from .models import User, Candidate, Election, ElectionsCandidate, ElectionsPrivileged
 from rest_framework import viewsets, generics
 from .serializers import UserSerializer, GroupSerializer, CandidateSerializer, ElectionSerializer, \
@@ -64,9 +68,35 @@ class ElectionsCandidatesList(generics.ListAPIView):
         return ElectionsCandidate.objects.filter(election_id=id)
 
 
+class UserElectionList(generics.ListAPIView):
+    """
+    API endpoint list of elections which user can vote on.
+    """
+    queryset = Election.objects.all()
+    serializer_class = ElectionSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, )
+
+    def get_queryset(self):
+        id = self.kwargs['pk']
+        return ElectionsPrivileged.objects.filter(elector_id=id)
+
+
+
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def retrieve(self, request, pk=None):
+        if pk == 'i':
+            return Response(UserSerializer(request.user,
+                context={'request':request}).data)
+        return super(UserViewSet, self).retrieve(request, pk)
 
 
 
