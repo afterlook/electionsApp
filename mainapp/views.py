@@ -1,8 +1,10 @@
 from django.contrib.auth.models import Group
-from knox.auth import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from mainapp.permissions import PublicEndpoint
 from .models import User, Candidate, Election, ElectionsCandidate, ElectionsPrivileged
 from rest_framework import viewsets, generics
 from .serializers import UserSerializer, GroupSerializer, CandidateSerializer, ElectionSerializer, \
@@ -68,24 +70,32 @@ class ElectionsCandidatesList(generics.ListAPIView):
         return ElectionsCandidate.objects.filter(election_id=id)
 
 
-class UserElectionList(generics.ListAPIView):
+class UserElectionList(viewsets.ModelViewSet):
     """
     API endpoint list of elections which user can vote on.
     """
-    queryset = Election.objects.all()
-    serializer_class = ElectionSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated, )
+    # queryset = Election.objects.all()
+    # serializer_class = ElectionSerializer
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated, )
+    #
+    # def get_queryset(self):
+    #     id = self.kwargs['pk']
+    #     return ElectionsPrivileged.objects.filter(elector_id=id)
+    queryset = ElectionsPrivileged.objects.all()
+    serializer_class = ElectionsPrivilegedSerializer
 
-    def get_queryset(self):
-        id = self.kwargs['pk']
-        return ElectionsPrivileged.objects.filter(elector_id=id)
+    def retrieve(self, request, pk=None):
+        if pk == 'i':
+            user_id = request.user.id
+            user_elections = ElectionsPrivileged.objects.filter(elector_id=user_id)
+            serialized_elections = ElectionsPrivilegedSerializer(
+                user_elections,
+                context={'request': request},
+                many=True
+            )
+            return Response(serialized_elections.data)
 
-
-
-class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -99,8 +109,17 @@ class UserViewSet(viewsets.ModelViewSet):
         return super(UserViewSet, self).retrieve(request, pk)
 
 
+class ExampleView(APIView):
+    def get(self, request, format=None):
+        content = {
+            'user': request.user,  # `django.contrib.auth.User` instance.
+            'auth': request.auth,  # None
+        }
+        return Response(content)
 
 
+class UserList(generics.ListAPIView):
+    # permission_classes = (PublicEndpoint,)
 
-
-
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

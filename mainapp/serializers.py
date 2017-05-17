@@ -3,16 +3,11 @@ from rest_framework import serializers
 from .models import User, Candidate, Election, ElectionsCandidate, ElectionsPrivileged
 
 
-# class UserSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ('url','id', 'username','password', 'email',
-#                   'first_name','last_name','birth_date', 'groups',
-#                   'is_superuser', 'is_staff', 'is_active')
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name')
+        fields = ('id', 'username', 'first_name', 'last_name')
+
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

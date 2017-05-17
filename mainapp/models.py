@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from rest_framework.authtoken.models import Token
 
 '''
 Tables creation.
@@ -92,4 +93,3 @@ class ElectionsPrivileged(models.Model):
     election = models.ForeignKey(Election, on_delete=models.CASCADE)
     elector = models.ForeignKey(User, on_delete=models.CASCADE)
     vote = models.BooleanField(default=False)
-
